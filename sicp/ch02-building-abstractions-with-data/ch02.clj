@@ -4,9 +4,14 @@
 
 ;; Exercise 2.36 accumulate-n 
 
+(defn null? 
+  "Return whether the list is empty. The function is builtin in scheme. " 
+  [s] 
+  (= 0 (count s))) 
+
 (defn reduce-n 
   [op init seqs] 
-  (if (nil? (ffirst seqs)) 
+  (if (null? (first seqs)))
     nil
     (cons (reduce op init (map first seqs)) 
           (reduce-n op init (map rest seqs))))) 

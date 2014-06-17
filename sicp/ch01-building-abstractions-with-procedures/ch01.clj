@@ -1,4 +1,4 @@
-;; CH01 
+;; sicp ch01 
 
 (ns ch01)
 
@@ -16,11 +16,15 @@
   [x] 
   (* x x x)) 
 
+;; Exercise 1.3. Taking three numbers as arguments and returns the sum of the
+;; squares of the two larger numbers." 
+
 (defn sum-of-square-of-larger-two
-  "Exercise 1.3. Taking three numbers as arguments and 
-  returns the sum of the squares of the two larger numbers."
   [x y z]
   (- (+ (square x) (square y) (square z)) (square (min x y z)))) 
+
+
+;; Exercise 1.8. Calculating cube root using Newton's method." 
 
 (defn good-enough? 
   [guess x] 
@@ -37,13 +41,13 @@
     (cube-root-newton-iter (improve-root guess x) x)))
 
 (defn cube-root-newton 
-  "Exercise 1.8. Calculating cube root using Newton's method." 
   [x] 
   (cube-root-newton-iter 1.0 x)) 
 
+;; Execrcise 1.12. Compute elements of Pascal's triangle by means of a
+;; recursive process" 
+
 (defn pascal-trianle-element-rec 
-  "Execrcise 1.12. 
-  Compute elements of Pascal's triangle by means of a recursive process" 
   [row col] 
   (cond 
     (> col row) "Out Of Border"
