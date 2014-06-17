@@ -9,3 +9,9 @@ pom.xml.asc
 .lein-repl-history
 .lein-plugins/
 .lein-failures
+
+.o
+.so 
+.a 
+.pyc 
+.pyo 
