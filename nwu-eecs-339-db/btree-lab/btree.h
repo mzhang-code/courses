@@ -87,7 +87,7 @@ public:
 
   // This is called before any inserts, updates, or deletes happen
   // If create=true, then initblock is meaningless
-  // If create=false, than the index already exists and we are telling you
+  // If create=false, then the index already exists and we are telling you
   // the block that the last detach returned
   // This should be your superblock, which contains the information 
   // you need to find the elements of the tree.

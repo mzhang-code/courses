@@ -167,7 +167,7 @@ ERROR_T BTreeIndex::Attach(const SIZE_T initblock, const bool create)
       rc = newfreenode.Serialize(buffercache,i);
 
       if (rc) {
-	return rc;
+		return rc;
       }
 
     }
