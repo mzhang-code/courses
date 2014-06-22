@@ -1,4 +1,3 @@
-pom.xml
 pom.xml.asc
 *jar
 /lib/
@@ -15,3 +14,8 @@ pom.xml.asc
 .a 
 .pyc 
 .pyo 
+.log
+.db
+
+__pycache__ 
+.egg-info 
