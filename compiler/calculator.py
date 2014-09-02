@@ -21,13 +21,14 @@ class SimpleDigitCalculator(object):
                     | - term rest
                     | ε
 
-            term    : 0  
+            term    : (expr) 
+                    | 0 
                     | 1  
                       ... 
                     | 9  
 
         e.g. 
-            9-5+2 -> 6
+            9-(5+2) -> 2 
     '''
     def __init__(self): 
         self.buf = ''
@@ -70,8 +71,13 @@ class SimpleDigitCalculator(object):
             d = self.lookahead
             self.match(d)
             return ord(d) - ord('0') 
+        elif self.lookahead == '(': 
+            self.match('(') 
+            val = self.expr() 
+            self.match(')') 
+            return val 
         else: 
-            raise ValueError('digit expected') 
+            raise ValueError('digit or left parenthesis is expected') 
 
     def match(self, c): 
         self.lookahead = self.buf.next() 
