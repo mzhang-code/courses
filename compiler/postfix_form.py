@@ -18,7 +18,7 @@ class PostfixTranslator(object):
     ''' The translator that parse infix expression and print postfix form. 
         LL(1) Grammar: 
 
-            E       : term rest 
+            expr    : term rest 
 
             rest    : + term { print '+' } rest 
                     | - term { print '-' } rest
@@ -61,6 +61,8 @@ class PostfixTranslator(object):
             d = self.lookahead
             self.match(d)
             sys.stdout.write(d) 
+        else: 
+            raise ValueError('digit expected') 
 
     def match(self, c): 
         self.lookahead = self.buf.next() 
