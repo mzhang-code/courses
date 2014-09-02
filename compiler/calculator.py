@@ -21,7 +21,10 @@ class SimpleDigitCalculator(object):
                     | - term rest
                     | ε
 
-            term    : (expr) 
+            term    | atom 
+                    : - atom 
+
+            atom    : (expr) 
                     | 0 
                     | 1  
                       ... 
@@ -29,6 +32,8 @@ class SimpleDigitCalculator(object):
 
         e.g. 
             9-(5+2) -> 2 
+            -1      -> -1 
+            -1+-1+2 -> 0 
     '''
     def __init__(self): 
         self.buf = ''
@@ -47,26 +52,24 @@ class SimpleDigitCalculator(object):
         if self.lookahead == '+': 
             self.match('+')
             val = left_oprand + self.term()
-            r = self.rest(val)
-            if r: 
-                return r
-            else: 
-                return val
+            return self.rest(val)
 
         elif self.lookahead == '-': 
             self.match('-')
             val = left_oprand - self.term()
-            r = self.rest(val)
-            if r: 
-                return r
-            else: 
-                return val 
+            return self.rest(val)
 
         else: 
-            # reaching '$'
-            return '' 
+            return left_oprand
 
     def term(self): 
+        if self.lookahead == '-': 
+            self.match('-') 
+            return (-1) * self.atom()
+        else: 
+            return self.atom()
+
+    def atom(self): 
         if is_digit(self.lookahead): 
             d = self.lookahead
             self.match(d)
@@ -81,6 +84,34 @@ class SimpleDigitCalculator(object):
 
     def match(self, c): 
         self.lookahead = self.buf.next() 
+
+class DigitCalculator(object): 
+    ''' 
+        LL(1) Grammar: 
+
+            expr        : term expr_rest 
+
+            expr_rest   : + term expr_rest 
+                        | - term expr_rest
+                        | ε
+
+            term        : atom term_rest
+
+            term_rest   : * atom term_rest 
+                        | / atom term_rest 
+                        | ε
+
+            atom        : (expr) 
+                        | 0 
+                        | 1  
+                          ... 
+                        | 9  
+
+        e.g. 
+            9-(5*2) -> 2 
+    '''
+    pass 
+
 
 if __name__ == '__main__': 
     string = sys.argv[1] 
