@@ -24,7 +24,7 @@ using namespace std;
  * 				| F 
  * 
  * Pitfall: 
- * 		bool val = left_operand && term();  // or 
+ * 		bool val = left_operand && term();  // lazy evaluation, or 
  * 		bool val = left_operand || sub(); 
  */ 
 
@@ -34,7 +34,8 @@ void match(char c) {
 	if (lookahead != c) { 
 		// ERROR 
 	}
-	if (lookahead == '\n') { 
+	if (c == '\n') { 
+		lookahead = '$'; 
 		return; 
 	}
 	lookahead = getchar(); 
@@ -125,12 +126,12 @@ bool atom() {
 
 int main() { 
 	int t = 0; 
-	// while (lookahead != EOF) { 
-	// 	lookahead = getchar(); 
-	// 	printf("Expression %d: ", ++t); 
-	// 	line(); 
-	// 	printf("\n"); 
-	// }
-	lookahead = getchar(); 
-	line(); 
+	while (1) { 
+		lookahead = getchar(); 
+		if (lookahead == EOF) { 
+			break; 
+		}
+		printf("Expression %d: ", ++t); 
+		line(); 
+	}
 }
