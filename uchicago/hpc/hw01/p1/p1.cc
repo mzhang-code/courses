@@ -5,7 +5,11 @@
 #include <unistd.h>
 #include <algorithm> 
 
+// #include "f2c.h"
+
 using namespace std; 
+
+// int dgemm_(char *transa, char *transb, integer *m, integer * n, integer *k, doublereal *alpha, doublereal *a, integer *lda, doublereal *b, integer *ldb, doublereal *beta, doublereal *c, integer *ldc);
 
 double** create_mat(int n) { 
 	double **A = new double*[n];
@@ -111,6 +115,10 @@ int main(int argc, char **argv) {
 	rand_mat(A, n);
 	rand_mat(B, n);
 
+	double *ma = new double[n * n]; 
+	double *mb = new double[n * n]; 
+	double *mc = new double[n * n]; 
+
 	clock_t ts = clock(); 
 	if (t == 0) { 
 		printf("naive matrix multiply %d\n", n); 
@@ -120,10 +128,18 @@ int main(int argc, char **argv) {
 		printf("block matrix multiply %d %d\n", n, b); 
 		block_mmx(A, B, C, n, b); 
 	}
-	else {
+	else if (t == 2) {
 		printf("recursive matrix multiply %d\n", n); 
 		recursive_mmx(A, B, C, n, b); 
 	}
+	else { 
+		// double alpha = 1.0, beta = 0.0; 
+		// char trans = 'n'; 
+		// dgemm_(&trans, &trans, (integer*)&n, (integer*)&n, (integer*)&n, 
+		// 		&alpha, ma, (integer*)&n, 
+		// 		mb, (integer*)&n, &beta, mc, (integer*)&n);
+	}
+
 	ts = clock() - ts; 
 	printf("%d clocks (%f seconds)\n", ts, ((float)ts)/CLOCKS_PER_SEC); 
 
