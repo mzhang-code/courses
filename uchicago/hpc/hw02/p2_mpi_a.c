@@ -23,6 +23,7 @@ void print_grid(int M[N][N]) {
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) { 
 			printf("%d ", M[i][j]);
+			fflush(stdout); 
 	  }
 	  printf("\n");
 	}
@@ -46,10 +47,13 @@ int main(int argc, char *argv[]) {
 	MPI_Comm_size(MPI_COMM_WORLD, &P); 
 
 	if (ID == 0) { 
+		double et = MPI_Wtime(); 
+
 		int buf[N+1]; 
 		for (int i = 1; i < P; i++) { 
 			for (int j = 0; j < msg_cnt(i, P); j++) { 
-				MPI_Recv(buf, N+1, MPI_INT, i, tag, MPI_COMM_WORLD, &status); 
+				MPI_Recv(buf, N+1, MPI_INT, i, tag, 
+						MPI_COMM_WORLD, &status); 
 				int r = buf[0]; 
 				// printf("recv row %d\n", r); 
 				for (int c = 0; c < N; c++) { 
@@ -58,6 +62,8 @@ int main(int argc, char *argv[]) {
 			}
 		}
 		print_grid(M); 
+
+		fprintf(stderr, "time elapsed %lf\n", MPI_Wtime() - et); 
 	  
   	}
 	else { 

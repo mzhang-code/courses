@@ -1,0 +1,79 @@
+
+Mengyu Zhang
+mengyuzhang@uchicago.edu
+
+Problem 2
+=========
+
+Compile
+-------
+
+```
+$ make 
+```
+
+Outputs
+
+`mset_a`: P2 strategy 1; 
+`mset_b`: P2 strategy 2; 
+
+Run
+---
+
+`mset_*` will generate a 0-1 bitmap to `stdout`, which later we can use to create image. 
+
+
+```
+$ mpiexec -n 10 mset_a > output_a.txt
+$ mpiexec -n 10 mset_b > output_b.txt
+```
+
+Strategy
+--------
+
+The first strategy is statically assigning rows of points to workers, while the later is dynamically dispathing. 
+
+The key observation of implementation of the sencond strategy is using `MPI_ANY_SOURCE` when receiving message and `status.MPI_SOURCE` when sending next request. 
+
+Stats
+-----
+
+*Failed* to set up the mpi environment on Midway, and therefore experiments are conducted on local machine. 
+
+Input matrix is 1000 * 1000. 
+
+### Strategy 1
+
+Elapsed time: 5.658887 sec
+
+### Strategy 2 
+
+Elapsed time: 13.035881 sec
+
+
+
+Problem 3 
+=========
+
+Env
+---
+
+```
+make
+```
+
+Output `p3`. 
+
+```
+$ mpiexec -n 2 ./p3
+```
+
+Stats
+-----
+
+The program send and recv 1000 empty message between a processor pair. 
+
+Throughput is 75.99423 message pairs(including one send and one recv) per second. 
+
+Communication latency is 0.013159 second. 
+

@@ -47,6 +47,8 @@ int main(int argc, char *argv[]) {
 	MPI_Comm_size(MPI_COMM_WORLD, &P); 
 
 	if (ID == 0) { 
+		double et = MPI_Wtime(); 
+
 		MPI_Status status;
 		int req_buf[1]; 
 		int res_buf[N+1];
@@ -90,6 +92,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		print_grid(M); 
+		fprintf(stderr, "time elapsed %lf\n", MPI_Wtime() - et); 
 	  
   	}
 	else { 
