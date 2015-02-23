@@ -83,22 +83,28 @@ int main(int argc, char * argv[])
 	/* time A */
 	start = clock(); 
 	work_kernel_static(A, m, n);
-	printf("%lu\n", clock() - start); 
+	printf("%f\n", (float)(clock() - start) / CLOCKS_PER_SEC); 
 
 	/* time B */
 	start = clock(); 
 	work_kernel_dynamic( B, m, n);
-	printf("%lu\n", clock() - start); 
+	printf("%f\n", (float)(clock() - start) / CLOCKS_PER_SEC); 
 
 	/* time C */
 	start = clock(); 
 	work_kernel_dynamic( C, m, n);
-	printf("%lu\n", clock() - start); 
+	printf("%f\n", (float)(clock() - start) / CLOCKS_PER_SEC); 
 
 	
 	/* Print out timing to stdout in seconds for each array */
 	/* Free memory*/
 		
+	free(C[0]); 
+	free(C); 
+	for (int i = 0; i < m; i++) { 
+		free(B[i]); 
+	}
+	free(B); 
 	return 0;
 
 }

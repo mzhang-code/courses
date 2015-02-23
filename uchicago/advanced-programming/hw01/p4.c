@@ -35,9 +35,15 @@ int main(int argc, char *argv[]) {
 			if (j != 0) { 
 				printf(" "); 
 			}
-			printf("%d", (int)mat[i][j]); 
+			printf("%.1f", mat[i][j]); 
 		}
 		printf("\n"); 
 	}
+
+	for(int i = 0; i < n; i++) { 
+		free(mat[i]); 
+	}
+	free(mat); 
+
 	return 0; 
 }

@@ -3,9 +3,11 @@
 #include <vector> 
 #include <utility> 
 
-#include <omp.h>
+#include <omp.h> 
 
 using namespace std;
+
+#define THREAD_NUM 4 
 
 typedef vector<int> List; 
 typedef vector<List> Mat; 
@@ -52,7 +54,7 @@ void dijkstra(Mat G, Mat &D, Mat W, int s) {
 		flags[node] = 1; 
 
 		for (int v : G[node]) { 
-			if (D[s][node] + W[node][v] < D[s][v]) { 
+			if (!flags[v] && D[s][node] + W[node][v] < D[s][v]) { 
 				D[s][v] = D[s][node] + W[node][v]; 
 			}
 		}
@@ -80,10 +82,11 @@ int main() {
 		G[s].push_back(t); 
 	}
 
-	#pragma omp parallel {
-		for (int s = 0; s < n; s++) { 
-			dijkstra(G, D, W, s); 
-		}
+	omp_set_num_threads(THREAD_NUM); 
+
+	#pragma omp parallel for 
+	for (int s = 0; s < n; s++) { 
+		dijkstra(G, D, W, s); 
 	}
 
 	return 0; 

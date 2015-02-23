@@ -6,6 +6,10 @@
 
 int main(int argc, char* argv[]) { 
 	FILE* fp = fopen(argv[1], "r"); 
+	if (!fp) { 
+		printf("Error with open file."); 
+		exit(1); 
+	}
 	char text[MAX_LINES][MAX_CHAR_PER_LINE]; 
 	int nlines = 0; 
 	size_t len = MAX_CHAR_PER_LINE; 
@@ -19,6 +23,7 @@ int main(int argc, char* argv[]) {
 	for (int i = 0; i < nlines; i++) { 
 		printf("%s", text[i]); 
 	}
+	printf("\n"); 
 	fclose(fp); 
 	return 0; 
 }

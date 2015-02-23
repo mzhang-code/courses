@@ -3,7 +3,7 @@
   
 void heapify(int *f, int n) {
 	/* Your Code Here */
-	for (int i = n-1; i > 0; i--) { 
+	for (int i = 1; i < n; i++) { 
 		int p = i; 
 		while (p > 0) { 
 			if (f[p] > f[p/2]) { 

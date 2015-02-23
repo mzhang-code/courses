@@ -48,9 +48,10 @@ void dijkstra(Mat G, Mat &D, Mat W, int s) {
 	while (k--) { 
 		int node = extract_min(D[s], flags); 
 		flags[node] = 1; 
-
+		
+		/* relax */ 
 		for (int v : G[node]) { 
-			if (D[s][node] + W[node][v] < D[s][v]) { 
+			if (!flags[v] && D[s][node] + W[node][v] < D[s][v]) { 
 				D[s][v] = D[s][node] + W[node][v]; 
 			}
 		}

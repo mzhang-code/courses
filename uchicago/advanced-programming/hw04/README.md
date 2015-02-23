@@ -1,46 +1,84 @@
 Homework 4
 Graphs/Multicore
-MPCS 51100
-due: 12/10/2014
 
-Compile
-=======
+Mengyu Zhang
 
-```
-$ sh compile.sh
-```
-
-Executables `p1_a`, `p1_b`, `p2` will be generated. 
+mengyuzhang@uchicago.edu
 
 1. 
 ==
 
 The format of input test file has been modified, where the comments have been removed, and an extra line is added to indicate node number and edge number. 
 
-a) p1_a.cc
+Compile
+-------
 
-b) p1_b.cc
+```
+$ sh compile.sh
+```
 
-Your strategy will be straightforward -- simply assign a different
-source vertex to each core. Assume n > p, where p is the number of
-processors (i.e.  cores) on a multicore machine. What is the
-complexity of the parallel algorithm in terms of n and p? Compare the
-performance of the serial and parallel approach using the provided
-sample graph. Comment briefly on the observed timings.
+Executables `p1_a`, `p1_b` will be generated. 
 
-2. Next, consider how you might use a shared memory parallel processor
-to accelerate Dijskstra *within* a single source computation? There
-are several possible approaches, and developing a reasonable approach
-yourself (doesn't have to be optimal) is part of the exercise. In this
-case, to guide your thinking you may assume that n is much larger than
-p -- i.e there are many more vertices than cores. Consider ways to
-partition the graph among processors to minmize contention and load
-balance -- ie to keep all cores busy but require minimum
-synchronization.
+a)
+--
 
-a) write pseudocode to describe your approach
+p1_a.cc
+
+Run 
+
+```
+$ cat text_graph_small.txt | ./p1_a 
+```
+
+b)
+--
+
+p1_b.cc
+
+Run 
+
+```
+$ cat text_graph_small.txt | ./p1_b
+```
+
+Complexity is O(V^2/P). 
+
+2. 
+==
+
+Inside the loop of Dijkstra algorithm, the major operations are extract unmarked vertex with minimum distance and update distances when new vertex is added. 
+
+Thus, the parallel algorithm will explore the concurrency in EXTRACT-MIN procedure and RELAX procedure. For edges relaxation, there's no dependency at all, which can be speedup using openmp directly. For the part of EXTRACT-MIN, a map-reduce like idea is adopted, which every thread keeps a local minimum vertex, and finally reduce these local values together and return the vertex with global minimum distance. 
+
+a) pseudocode
+-------------
+
+EXTRACT-MIN(D) 
+    T = number of threads
+    n = number of vertices 
+
+    local_min_vals = Array[n] 
+    local_min_idx = Array[n] 
+
+    PARALLEL BEGIN    
+        tid = id of thread 
+
+        start = start point for thread tid 
+        end = end point for thread tid 
+
+        for i = start to end
+            if D[i] > local_min_vals[i]
+                local_min_vals[i] = D[i]
+                local_min_idx[i] = i
+    PARALLEL END
+
+    return select_min_from(local_min_vals)    
+
+RELAX(u, D) 
+    PARALLEL FOR LOOP 
+    for v in G.Adj[u]
+        if D[v] > D[u] + weight(u, v) 
+            D[v] = D[u] + weight(u, v)
+
 b) implement the psuedocode in C/OpenMP
 
-Note that you get 50% credit for just the psuedo-code -- ie a
-non-trivial part of the exercise involves developing a reasonable
-approach.

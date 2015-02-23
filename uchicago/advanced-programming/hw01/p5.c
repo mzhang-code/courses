@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
 	printf("Matrix with 1D indexing:\n"); 
 	for (int i = 0; i < n * n; i++) { 
-		printf("%d ", (int)mat[0][i]); 
+		printf("%.1f ", mat[0][i]); 
 		if ((i+1) % n == 0) { 
 			printf("\n"); 
 		}
@@ -45,11 +45,14 @@ int main(int argc, char *argv[]) {
 			if (j != 0) { 
 				printf(" "); 
 			}
-			printf("%d", (int)mat[i][j]); 
+			printf("%.1f", mat[i][j]); 
 		}
 		printf("\n"); 
 	}
-	
+
+	free(mat[0]); 
+	free(mat); 
+
 	return 0; 
 }
 
