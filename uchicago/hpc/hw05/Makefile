@@ -4,7 +4,7 @@ NC = nvcc
 
 .PHONY: default all clean 
 
-TARGET = $(P1) $(P2) $(P4) 
+TARGET = $(P1) $(P2) $(P3) $(P4) 
 
 P1 = simpson_omp
 P2 = mc_omp
@@ -21,6 +21,9 @@ $(P1):
 $(P2):
 	$(CC) -std=c99 -lm -fopenmp mc_omp.c -o $@
 
+$(P3):
+	$(NC) simpson.cu -o $@
+
 $(P4):
 	$(NC) mc.cu -o $@
 
@@ -32,4 +35,4 @@ $(P4):
 
 
 clean: 
-	rm -f *.o $(TARGET)
+	rm -f *.o $(TARGET) *.out *.err
