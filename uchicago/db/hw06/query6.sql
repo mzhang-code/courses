@@ -31,13 +31,6 @@ AND E.course_id = 8;
 
 /* 2. show students who selected some courses and the number of courses they have. 
    This query should return, 
-   +--------+--------------------+
-   | name   | COUNT(E.course_id) |
-   +--------+--------------------+
-   | Elis   |                  3 |
-   | Mengyu |                  7 |
-   | Tom    |                  5 |
-   +--------+--------------------+
 */
 
 SELECT S.name, COUNT(E.course_id) AS cnt
@@ -47,14 +40,6 @@ GROUP BY S.email
 ORDER BY cnt; 
 
 /* 3. show student pairs who select the same course
-   This query should return, 
-   +----------------------+----------------------+
-   | student_email        | student_email        |
-   +----------------------+----------------------+
-   | mengyuzhang@uchicago | tm@uiuc.edu          |
-   | elis@uchicago.edu    | mengyuzhang@uchicago |
-   | elis@uchicago.edu    | tm@uiuc.edu          |
-   +----------------------+----------------------+
 */
 
 SELECT distinct E1.student_email, E2.student_email
@@ -63,14 +48,6 @@ USING (course_id)
 WHERE E1.student_email < E2.student_email; 
 
 /* 4. show numner of students who select the same course with each student. 
-   This query should return, 
-   +----------------------+-------------------------+
-   | student_email        | COUNT(E2.student_email) |
-   +----------------------+-------------------------+
-   | elis@uchicago.edu    |                       4 |
-   | mengyuzhang@uchicago |                       7 |
-   | tm@uiuc.edu          |                       7 |
-   +----------------------+-------------------------+
 */
 
 SELECT E1.student_email, COUNT(E2.student_email) AS student_cnt
@@ -105,24 +82,15 @@ WHERE E1.student_email < E2.student_email
 GROUP BY E1.student_email, E2.student_email
 HAVING common_cnt > 3; 
 
+/* 6. show the count of questions that every student posted in every course, using natural join on course_id and student_email. 
+*/ 
+
+SELECT E.student_email, E.course_id, E.code, COUNT(*) AS question_cnt
+FROM Enroll E NATURAL JOIN Question Q
+GROUP BY E.course_id, E.student_email; 
+
 
 /* 7. show students and the number of courses they have, including students who have no course.
-   This query should return, 
-   +--------+--------------------+
-   | name   | COUNT(E.course_id) |
-   +--------+--------------------+
-   | Alice  |                  0 |
-   | Bob    |                  0 |
-   | David  |                  0 |
-   | Elis   |                  3 |
-   | Jack   |                  0 |
-   | Kobe   |                  0 |
-   | Mengyu |                  7 |
-   | Messi  |                  0 |
-   | reg    |                  0 |
-   | Tom    |                  5 |
-   | Wang   |                  0 |
-   +--------+--------------------+
 */
 
 SELECT S.name, S.email, COUNT(E.course_id) AS course_cnt
@@ -132,21 +100,6 @@ GROUP BY S.email;
 
 /* 8. show students who have no courses. 
    This query should return, 
-   +--------+--------------------+
-   | name   | COUNT(E.course_id) |
-   +--------+--------------------+
-   | Alice  |                  0 |
-   | Bob    |                  0 |
-   | David  |                  0 |
-   | Elis   |                  3 |
-   | Jack   |                  0 |
-   | Kobe   |                  0 |
-   | Mengyu |                  7 |
-   | Messi  |                  0 |
-   | reg    |                  0 |
-   | Tom    |                  5 |
-   | Wang   |                  0 |
-   +--------+--------------------+
 */
 
 SELECT S.name, S.email
@@ -157,21 +110,6 @@ HAVING COUNT(E.course_id) < 1;
 
 /* 9. show students who have selected all the courses. 
    This query should return, 
-   +--------+--------------------+
-   | name   | COUNT(E.course_id) |
-   +--------+--------------------+
-   | Alice  |                  0 |
-   | Bob    |                  0 |
-   | David  |                  0 |
-   | Elis   |                  3 |
-   | Jack   |                  0 |
-   | Kobe   |                  0 |
-   | Mengyu |                  7 |
-   | Messi  |                  0 |
-   | reg    |                  0 |
-   | Tom    |                  5 |
-   | Wang   |                  0 |
-   +--------+--------------------+
 */
 
 SELECT S.name, S.email
@@ -204,5 +142,4 @@ FROM Enroll E JOIN Course C
 ON E.course_id = C.id 
 GROUP BY C.id C.code C.title
 HAVING student_num < 1000; 
-
 
